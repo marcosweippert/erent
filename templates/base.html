@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <!-- Usar shrink-to-fit para melhor responsividade com Bootstrap -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Administração de Imóveis{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'index' %}">Admin Imóveis</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="{% url 'pessoa_list' %}">Pessoas</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'imobiliaria_list' %}">Imobiliárias</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'condominio_list' %}">Condomínios</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'imovel_list' %}">Imóveis</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contrato_list' %}">Contratos</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        {% block content %}
+        <!-- Conteúdo específico de cada template -->
+        {% endblock %}
+    </div>
+
+    <!-- Bootstrap JS e dependências -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

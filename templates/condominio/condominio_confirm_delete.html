@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Excluir Condomínio{% endblock %}
+{% block content %}
+<h1>Excluir Condomínio</h1>
+<p>Tem certeza que deseja excluir o condomínio "{{ object.nome }}"?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Sim, excluir</button>
+  <a href="{% url 'condominio_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

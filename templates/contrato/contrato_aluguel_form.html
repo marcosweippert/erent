@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block title %}Alugar Imóvel{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h2>Alugar Imóvel</h2>
+    </div>
+    <div class="card-body">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+        
+        <!-- Exibição do Imóvel (readonly) -->
+        <div class="form-group">
+          <label>Imóvel</label>
+          <input type="text" class="form-control" value="{% if imovel_instance %}{{ imovel_instance.referencia }} - {{ imovel_instance.endereco }}{% endif %}" readonly>
+        </div>
+        
+        <div class="row">
+          <!-- Coluna 1 -->
+          <div class="col-md-6">
+            <!-- Inquilino -->
+            <div class="form-group">
+              <label for="{{ form.inquilino.id_for_label }}">Inquilino</label>
+              {{ form.inquilino }}
+              {% for error in form.inquilino.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <!-- Valor Aluguel -->
+            <div class="form-group">
+              <label for="{{ form.valor_aluguel.id_for_label }}">Valor Aluguel</label>
+              {{ form.valor_aluguel }}
+              {% for error in form.valor_aluguel.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <!-- Período de Contrato -->
+            <div class="form-group">
+              <label for="{{ form.periodo_contrato.id_for_label }}">Período (meses)</label>
+              {{ form.periodo_contrato }}
+              {% for error in form.periodo_contrato.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <!-- Data de Início -->
+            <div class="form-group">
+              <label for="{{ form.data_inicio.id_for_label }}">Data de Início</label>
+              {{ form.data_inicio }}
+              {% for error in form.data_inicio.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <!-- Tipo (campo que será definido automaticamente, mas podemos exibi-lo como leitura) -->
+            <div class="form-group">
+              <label for="id_tipo">Tipo</label>
+              <input type="text" id="id_tipo" class="form-control" value="Aluguel" readonly>
+            </div>
+            <!-- Data de Assinatura do Contrato (readonly) -->
+            <div class="form-group">
+              <label for="id_data_assinatura_contrato">Data de Assinatura</label>
+              <input type="text" id="id_data_assinatura_contrato" class="form-control" value="{{ form.initial.data_assinatura_contrato }}" readonly>
+            </div>
+          </div>
+          
+          <!-- Coluna 2 -->
+          <div class="col-md-6">
+            <!-- Garantia -->
+            <div class="form-group">
+              <label for="{{ form.garantia.id_for_label }}">Garantia</label>
+              {{ form.garantia }}
+              {% for error in form.garantia.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+                        <!-- valor caução -->
+                        <div class="form-group">
+                          <label for="{{ form.valor_caucao.id_for_label }}">Valor Caução</label>
+                          {{ form.valor_caucao }}
+                          {% for error in form.valor_caucao.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                          {% endfor %}
+                        </div>
+            <!-- Parcelamento da Garantia -->
+            <div class="form-group">
+              <label for="{{ form.parcelamento_garantia.id_for_label }}">Parcelamento da Garantia</label>
+              {{ form.parcelamento_garantia }}
+              {% for error in form.parcelamento_garantia.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <!-- Modo de Pagamento -->
+            <div class="form-group">
+              <label for="{{ form.modo_pagamento.id_for_label }}">Modo de Pagamento</label>
+              {{ form.modo_pagamento }}
+              {% for error in form.modo_pagamento.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <!-- Dia de Pagamento -->
+            <div class="form-group">
+              <label for="{{ form.dia_pagamento.id_for_label }}">Dia de Pagamento</label>
+              {{ form.dia_pagamento }}
+              {% for error in form.dia_pagamento.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <!-- Taxa de Juros -->
+            <div class="form-group">
+              <label for="{{ form.taxa_juros.id_for_label }}">Taxa de Juros</label>
+              {{ form.taxa_juros }}
+              {% for error in form.taxa_juros.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <!-- Taxa de Multa -->
+            <div class="form-group">
+              <label for="{{ form.taxa_multa.id_for_label }}">Taxa de Multa</label>
+              {{ form.taxa_multa }}
+              {% for error in form.taxa_multa.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <!-- Taxa Adm -->
+            <div class="form-group">
+              <label for="{{ form.taxa_adm.id_for_label }}">Taxa Adm</label>
+              {{ form.taxa_adm }}
+              {% for error in form.taxa_adm.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <!-- Observações -->
+            <div class="form-group">
+              <label for="{{ form.observacoes.id_for_label }}">Observações</label>
+              {{ form.observacoes }}
+              {% for error in form.observacoes.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        
+        <div class="d-flex justify-content-between">
+          <a href="{% url 'contrato_list' %}" class="btn btn-secondary">Cancelar</a>
+          <button type="submit" class="btn btn-primary">Confirmar Locação</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

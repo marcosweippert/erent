@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Excluir Imóvel{% endblock %}
+{% block content %}
+<h1>Excluir Imóvel</h1>
+<p>Tem certeza que deseja excluir o imóvel "{{ object.referencia }}"?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Sim, excluir</button>
+  <a href="{% url 'imovel_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

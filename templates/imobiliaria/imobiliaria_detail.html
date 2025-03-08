@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Detalhes da Imobiliária{% endblock %}
+{% block content %}
+<h1>{{ object.nome }}</h1>
+<ul class="list-group">
+  <li class="list-group-item"><strong>CNPJ:</strong> {{ object.cnpj }}</li>
+  <li class="list-group-item"><strong>Endereço:</strong> {{ object.endereco }}</li>
+  {% if object.proprietario %}
+  <li class="list-group-item"><strong>Proprietário:</strong> {{ object.proprietario.nome }}</li>
+  {% endif %}
+  <li class="list-group-item"><strong>Imóveis:</strong>
+    <ul>
+      {% for imovel in object.imoveis.all %}
+      <li>{{ imovel.referencia }} - {{ imovel.endereco }}</li>
+      {% empty %}
+      <li>Nenhum imóvel associado.</li>
+      {% endfor %}
+    </ul>
+  </li>
+</ul>
+<div class="mt-3">
+  <a href="{% url 'imobiliaria_update' object.pk %}" class="btn btn-warning">Editar</a>
+  <a href="{% url 'imobiliaria_delete' object.pk %}" class="btn btn-danger">Excluir</a>
+  <a href="{% url 'imobiliaria_list' %}" class="btn btn-secondary">Voltar</a>
+</div>
+{% endblock %}

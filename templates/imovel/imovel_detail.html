@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Detalhes do Imóvel{% endblock %}
+{% block content %}
+<h1>{{ object.referencia }}</h1>
+<ul class="list-group">
+  <li class="list-group-item"><strong>Endereço:</strong> {{ object.endereco }}</li>
+  <li class="list-group-item"><strong>Tipo:</strong> {{ object.get_tipo_display }}</li>
+  <li class="list-group-item"><strong>Status:</strong> {{ object.get_status_display }}</li>
+  <li class="list-group-item"><strong>Valor Aluguel:</strong> {{ object.valor_aluguel }}</li>
+  <li class="list-group-item"><strong>Valor Venda:</strong> {{ object.valor_venda }}</li>
+  <li class="list-group-item"><strong>Observações:</strong> {{ object.observacoes }}</li>
+</ul>
+<div class="mt-3">
+  <a href="{% url 'imovel_update' object.pk %}" class="btn btn-warning">Editar</a>
+  <a href="{% url 'imovel_delete' object.pk %}" class="btn btn-danger">Excluir</a>
+  <a href="{% url 'imovel_list' %}" class="btn btn-secondary">Voltar</a>
+  {% if object.status == "disponivel" %}
+    <a href="{% url 'contrato_alugar' %}?imovel={{ object.pk }}" class="btn btn-success">Alugar</a>
+  {% endif %}
+</div>
+{% endblock %}

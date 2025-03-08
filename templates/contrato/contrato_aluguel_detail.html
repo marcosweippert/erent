@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Contrato de Locação{% endblock %}
+
+{% block content %}
+<h1>Contrato de Locação de Imóvel Residencial</h1>
+
+<p>
+    <strong>Objeto:</strong> O presente contrato tem como objeto o imóvel de propriedade do LOCADOR <strong>{{ object.proprietario.nome }}</strong>, 
+    situado em <strong>{{ object.imovel.endereco }}</strong>.
+</p>
+
+<p>
+    <strong>Locador:</strong> {{ object.proprietario.nome }}, {{ object.proprietario.estado_civil }}, CPF: {{ object.proprietario.cpf }}, 
+    RG: {{ object.proprietario.rg }}, residente em {{ object.proprietario.endereco }}.
+</p>
+
+<p>
+    <strong>Locatário:</strong> {{ object.inquilino.nome }}, {{ object.inquilino.estado_civil }}, CPF: {{ object.inquilino.cpf }}, 
+    RG: {{ object.inquilino.rg }}, residente em {{ object.inquilino.endereco }}.
+</p>
+
+<p>
+    <strong>Condições da Locação:</strong><br>
+    O prazo de locação será de 
+    {% with meses=object.data_fim|date:"m" %}
+        {% comment %}Você pode personalizar a exibição do período se necessário{% endcomment %}
+    {% endwith %}
+    a partir de <strong>{{ object.data_inicio|date:"d/m/Y" }}</strong> até <strong>{{ object.data_fim|date:"d/m/Y" }}</strong>.
+</p>
+
+<p>
+    <strong>Valor do Aluguel:</strong> R$ {{ object.valor_aluguel }}
+</p>
+
+<hr>
+<h2>Cláusulas Contratuais</h2>
+
+<p>
+    <strong>CLÁUSULA PRIMEIRA:</strong> O prazo de locação será conforme estipulado, iniciando em {{ object.data_inicio|date:"d/m/Y" }} e terminando em {{ object.data_fim|date:"d/m/Y" }}. 
+</p>
+
+<p>
+    <strong>CLÁUSULA SEGUNDA:</strong> O locatário se obriga a pagar mensalmente o valor de R$ {{ object.valor_aluguel }}, já inclusos os encargos previstos.
+</p>
+
+<!-- Adicione aqui as demais cláusulas conforme o modelo -->
+<p>
+    Toledo, {{ object.data_assinatura|date:"d/m/Y" }}
+</p>
+
+<p>
+    ___________________________<br>
+    <strong>Locador:</strong> {{ object.proprietario.nome }}<br>
+    CPF: {{ object.proprietario.cpf }}
+</p>
+
+<p>
+    ___________________________<br>
+    <strong>Locatário:</strong> {{ object.inquilino.nome }}<br>
+    CPF: {{ object.inquilino.cpf }}
+</p>
+{% endblock %}

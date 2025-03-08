@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Detalhes da Pessoa{% endblock %}
+{% block content %}
+<h1>{{ object.nome }}</h1>
+<ul class="list-group">
+  <li class="list-group-item"><strong>Data de Nascimento:</strong> {{ object.data_nascimento|date:"d/m/Y" }}</li>
+  <li class="list-group-item"><strong>CPF:</strong> {{ object.cpf }}</li>
+  <li class="list-group-item"><strong>RG:</strong> {{ object.rg }}</li>
+  <li class="list-group-item"><strong>Estado Civil:</strong> {{ object.estado_civil }}</li>
+  <li class="list-group-item"><strong>Nacionalidade:</strong> {{ object.nacionalidade }}</li>
+  <li class="list-group-item"><strong>Endereço:</strong> {{ object.endereco }}</li>
+  <li class="list-group-item"><strong>Observações:</strong> {{ object.observacoes }}</li>
+  <li class="list-group-item"><strong>Tipo:</strong> {{ object.get_tipo_display }}</li>
+</ul>
+<div class="mt-3">
+  <a href="{% url 'pessoa_update' object.pk %}" class="btn btn-warning">Editar</a>
+  <a href="{% url 'pessoa_delete' object.pk %}" class="btn btn-danger">Excluir</a>
+  <a href="{% url 'pessoa_list' %}" class="btn btn-secondary">Voltar</a>
+</div>
+{% endblock %}

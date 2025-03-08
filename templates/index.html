@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Imóveis Disponíveis{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Aumenta o padding das células da tabela para aumentar a altura das linhas */
+  .table td, .table th {
+      padding: 0.4rem; /* ajuste esse valor conforme necessário */
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+  <h1 class="display-7 text-center">Imóveis Disponíveis</h1>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped w-100">
+      <thead class="thead-dark">
+        <tr>
+          <th>Referência</th>
+          <th>Endereço</th>
+          <th>Valor Aluguel</th>
+          <th>Tipo</th>
+          <th>Status</th>
+          <th>Proprietário</th>
+          <th>Imobiliária</th>
+          <th>Condomínio</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for imovel in imoveis %}
+        <tr>
+          <td>{{ imovel.referencia }}</td>
+          <td>{{ imovel.endereco }}</td>
+          <td>{{ imovel.valor_aluguel }}</td>
+          <td>{{ imovel.get_tipo_display }}</td>
+          <td>{{ imovel.get_status_display }}</td>
+          <td>
+            {% with imob=imovel.imobiliaria_set.all|first %}
+              {% if imob and imob.proprietario %}
+                {{ imob.proprietario.nome }}
+              {% else %}
+                N/A
+              {% endif %}
+            {% endwith %}
+          </td>
+          <td>
+            {% with imob=imovel.imobiliaria_set.all|first %}
+              {% if imob %}
+                {{ imob.nome }}
+              {% else %}
+                N/A
+              {% endif %}
+            {% endwith %}
+          </td>
+          <td>
+            {% with cond=imovel.condominio_set.all|first %}
+              {% if cond %}
+                {{ cond.nome }}
+              {% else %}
+                N/A
+              {% endif %}
+            {% endwith %}
+          </td>
+          <td>
+            <a href="{% url 'imovel_detail' imovel.pk %}" class="btn btn-info btn-sm">Detalhes</a>
+            {% if imovel.status == "disponivel" %}
+              <a href="{% url 'contrato_alugar' %}?imovel={{ imovel.pk }}" class="btn btn-success btn-sm">Alugar</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="9" class="text-center">Nenhum imóvel disponível.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

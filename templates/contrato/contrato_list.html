@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Lista de Contratos{% endblock %}
+{% block extra_css %}
+<style>
+  /* Aumenta o padding das células da tabela para melhorar a visualização */
+  .table td, .table th {
+      padding: 0.4rem;
+  }
+  /* Força a tabela a ocupar 100% da largura disponível */
+  .table {
+      width: 100% !important;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container-fluid mt-4">
+  <h1 class="display-4 text-center">Contratos</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Imóvel</th>
+      <th>Locatário</th>
+      <th>Locador</th>
+      <th>Tipo</th>
+      <th>Status</th>
+      <th>Data Início</th>
+      <th>Data Fim</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for contrato in object_list %}
+    <tr>
+      <td>{{ contrato.id }}</td>
+      <td>{{ contrato.imovel.referencia }}</td>
+      <td>{{ contrato.inquilino.nome }}</td>
+      <td>{{ contrato.proprietario.nome }}</td>
+      <td>{{ contrato.get_tipo_display }}</td>
+      <td>{{ contrato.get_status_display }}</td>
+      <td>{{ contrato.data_inicio|date:"d/m/Y" }}</td>
+      <td>{{ contrato.data_fim|date:"d/m/Y" }}</td>
+      <td>
+        <a href="{% url 'contrato_visualizar' contrato.pk %}" class="btn btn-success btn-sm">Visualizar</a>
+        <a href="{% url 'contrato_detail' contrato.pk %}" class="btn btn-secondary btn-sm">Detalhes</a>
+        <a href="{% url 'contrato_update' contrato.pk %}" class="btn btn-warning btn-sm">Editar</a>
+        <a href="{% url 'contrato_delete' contrato.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="9">Nenhum contrato cadastrado.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Detalhes do Condomínio{% endblock %}
+{% block content %}
+<h1>{{ object.nome }}</h1>
+<ul class="list-group">
+  <li class="list-group-item"><strong>CNPJ:</strong> {{ object.cnpj|default:"-" }}</li>
+  <li class="list-group-item"><strong>Endereço:</strong> {{ object.endereco }}</li>
+  <li class="list-group-item"><strong>Imóveis:</strong>
+    <ul>
+      {% for imovel in object.imoveis.all %}
+      <li>{{ imovel.referencia }} - {{ imovel.endereco }}</li>
+      {% empty %}
+      <li>Nenhum imóvel associado.</li>
+      {% endfor %}
+    </ul>
+  </li>
+</ul>
+<div class="mt-3">
+  <a href="{% url 'condominio_update' object.pk %}" class="btn btn-warning">Editar</a>
+  <a href="{% url 'condominio_delete' object.pk %}" class="btn btn-danger">Excluir</a>
+  <a href="{% url 'condominio_list' %}" class="btn btn-secondary">Voltar</a>
+</div>
+{% endblock %}
