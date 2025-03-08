@@ -39,7 +39,7 @@ Clone o repositório:
 
 bash
 Copiar
-git clone https://github.com/seu_usuario/projeto_erent.git
+git clone https://github.com/marcosweippert/erent.git
 Crie e ative um ambiente virtual:
 
 bash
