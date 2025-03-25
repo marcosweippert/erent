@@ -42,3 +42,8 @@ class ContratoAluguelForm(forms.ModelForm):
             'modo_pagamento', 'dia_pagamento', 'taxa_adm', 'valor_caucao'
         ]
 
+from django.contrib.auth.forms import AuthenticationForm
+
+class LoginForm(AuthenticationForm):
+    username = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
