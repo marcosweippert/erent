@@ -29,8 +29,7 @@ class Imobiliaria(models.Model):
     nome = models.CharField(max_length=100)
     cnpj = models.CharField(max_length=14, unique=True)
     endereco = models.CharField(max_length=255)
-    proprietario = models.ForeignKey(Pessoa, on_delete=models.SET_NULL, null=True, blank=True)
-    imoveis = models.ManyToManyField('Imovel', blank=True)
+
 
     def __str__(self):
         return self.nome
@@ -39,16 +38,15 @@ class Condominio(models.Model):
     nome = models.CharField(max_length=100)
     cnpj = models.CharField(max_length=14, null=True, blank=True)
     endereco = models.CharField(max_length=255)
-    imoveis = models.ManyToManyField('Imovel', blank=True)
 
     def __str__(self):
         return self.nome
 
 class Imovel(models.Model):
     TIPOS_IMOVEL = (
-        ('residencial', 'Residencial'),
-        ('comercial', 'Comercial'),
-        ('industrial', 'Industrial'),
+        ('kitnet', 'Kitnet'),
+        ('casa', 'Casa'),
+        ('barracao', 'Barracão'),
     )
 
     STATUS_IMOVEL = (
@@ -57,17 +55,40 @@ class Imovel(models.Model):
         ('venda', 'Venda'),
     )
 
+    CATEGORIA_IMOVEL = (
+        ('residencial', 'Residencial'),
+        ('comercial', 'Comercial'),
+    )
+
     referencia = models.CharField(max_length=50, unique=True)
     endereco = models.CharField(max_length=255)
     valor_aluguel = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     valor_venda = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     tipo = models.CharField(max_length=15, choices=TIPOS_IMOVEL)
+    categoria = models.CharField(max_length=15, null=True, blank=True, choices=CATEGORIA_IMOVEL)
     status = models.CharField(max_length=15, choices=STATUS_IMOVEL)
     observacoes = models.TextField(blank=True, null=True)
 
+    proprietario = models.ForeignKey(Pessoa, on_delete=models.SET_NULL, null=True, blank=True)
+    imobiliaria = models.ForeignKey(
+        Imobiliaria,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='imoveis_diretos'  # nome único para a relação reversa
+    )
+    condominio = models.ForeignKey(
+        Condominio,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='imoveis_diretos_fk'  # nome único para a relação reversa
+    )
 
     def __str__(self):
         return f'{self.referencia} - {self.endereco}'
+
+
 
 class Contrato(models.Model):
     STATUS_CONTRATO = (

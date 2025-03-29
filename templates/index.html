@@ -38,31 +38,25 @@
           <td>{{ imovel.get_tipo_display }}</td>
           <td>{{ imovel.get_status_display }}</td>
           <td>
-            {% with imob=imovel.imobiliaria_set.all|first %}
-              {% if imob and imob.proprietario %}
-                {{ imob.proprietario.nome }}
-              {% else %}
-                N/A
-              {% endif %}
-            {% endwith %}
+            {% if imovel.proprietario %}
+              {{ imovel.proprietario.nome }}
+            {% else %}
+              N/A
+            {% endif %}
           </td>
           <td>
-            {% with imob=imovel.imobiliaria_set.all|first %}
-              {% if imob %}
-                {{ imob.nome }}
-              {% else %}
-                N/A
-              {% endif %}
-            {% endwith %}
+            {% if imovel.imobiliaria %}
+              {{ imovel.imobiliaria.nome }}
+            {% else %}
+              N/A
+            {% endif %}
           </td>
           <td>
-            {% with cond=imovel.condominio_set.all|first %}
-              {% if cond %}
-                {{ cond.nome }}
-              {% else %}
-                N/A
-              {% endif %}
-            {% endwith %}
+            {% if imovel.condominio %}
+              {{ imovel.condominio.nome }}
+            {% else %}
+              N/A
+            {% endif %}
           </td>
           <td>
             <a href="{% url 'imovel_detail' imovel.pk %}" class="btn btn-info btn-sm">Detalhes</a>

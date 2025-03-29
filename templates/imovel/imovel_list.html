@@ -2,33 +2,39 @@
 {% block title %}Imóveis - Administração de Imóveis{% endblock %}
 {% block content %}
 <h1>Imóveis</h1>
-<a href="{% url 'imovel_create' %}" class="btn btn-primary mb-3">Novo Imóvel</a>
+<a href="{% url 'imovel_create' %}" class="btn btn-secondary mb-3">Novo Imóvel</a>
 
-<h2>Imóveis Disponíveis</h2>
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>ID</th>
       <th>Referência</th>
       <th>Endereço</th>
       <th>Valor Aluguel</th>
       <th>Valor Venda</th>
       <th>Tipo</th>
+      <th>Categoria</th>
+      <th>Imobiliaria</th>
+      <th>Condominio</th>
       <th>Status</th>
-      <th>Observações</th>
       <th>Ações</th>
     </tr>
   </thead>
   <tbody>
     {% for imovel in disponiveis %}
     <tr>
+      <td>{{ imovel.id }}</td>
       <td>{{ imovel.referencia }}</td>
       <td>{{ imovel.endereco }}</td>
       <td>{{ imovel.valor_aluguel }}</td>
       <td>{{ imovel.valor_venda }}</td>
       <td>{{ imovel.get_tipo_display }}</td>
+      <td>{{ imovel.categoria }}</td>
+      <td>{{ imovel.imobiliaria }}</td>
+      <td>{{ imovel.condominio }}</td>
       <td>{{ imovel.get_status_display }}</td>
-      <td>{{ imovel.observacoes }}</td>
       <td>
+        <a href="{% url 'contrato_alugar' %}?imovel={{ imovel.pk }}" class="btn btn-success btn-sm">Alugar</a>
         <a href="{% url 'imovel_detail' imovel.pk %}" class="btn btn-info btn-sm">Detalhes</a>
         <a href="{% url 'imovel_update' imovel.pk %}" class="btn btn-warning btn-sm">Editar</a>
         <a href="{% url 'imovel_delete' imovel.pk %}" class="btn btn-danger btn-sm">Excluir</a>
@@ -46,26 +52,28 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>ID</th>
       <th>Referência</th>
       <th>Endereço</th>
       <th>Valor Aluguel</th>
       <th>Valor Venda</th>
       <th>Tipo</th>
+      <th>Categoria</th>
       <th>Status</th>
-      <th>Observações</th>
       <th>Ações</th>
     </tr>
   </thead>
   <tbody>
     {% for imovel in alugados %}
     <tr>
+      <td>{{ imovel.id }}</td>
       <td>{{ imovel.referencia }}</td>
       <td>{{ imovel.endereco }}</td>
       <td>{{ imovel.valor_aluguel }}</td>
       <td>{{ imovel.valor_venda }}</td>
       <td>{{ imovel.get_tipo_display }}</td>
+      <td>{{ imovel.categoria }}</td>
       <td>{{ imovel.get_status_display }}</td>
-      <td>{{ imovel.observacoes }}</td>
       <td>
         <a href="{% url 'imovel_detail' imovel.pk %}" class="btn btn-info btn-sm">Detalhes</a>
         <a href="{% url 'imovel_update' imovel.pk %}" class="btn btn-warning btn-sm">Editar</a>
