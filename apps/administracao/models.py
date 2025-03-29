@@ -135,9 +135,12 @@ class Contrato(models.Model):
     taxa_adm = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     garantia = models.CharField(max_length=20, choices=GARANTIA_CONTRATO)
     valor_caucao = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    data_pagamento_caucao = models.DateField(null=True, blank=True)
     parcelamento_garantia = models.PositiveIntegerField(choices=[(0, '0'), (1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5'), (6, '6')], blank=True, null=True)
     modo_pagamento = models.CharField(max_length=20, choices=TIPO_PAGAMENTO, blank=True, null=True)
     dia_pagamento = models.CharField(max_length=20, choices=DIA_PAGAMENTO, blank=True, null=True)
+    data_primeiro_pagamento = models.DateField(null=True, blank=True)
+    valor_primeiro_pagamento = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     observacoes = models.TextField(blank=True, null=True)
 
     def __str__(self):

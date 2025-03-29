@@ -23,7 +23,7 @@ class Command(BaseCommand):
                 endereco=f"Rua Inquilino {i}, 100",
                 tipo="inquilino",         # Ajustado para corresponder ao valor da opção
                 chave_pix=cpf_value,      # Chave PIX igual ao CPF
-                status="Disponivel"       # Status fixo como disponivel
+                status="disponivel"       # Status fixo como disponivel
             )
             inquilinos.append(inq)
         self.stdout.write("5 inquilinos criados.")
@@ -42,7 +42,7 @@ class Command(BaseCommand):
                 endereco=f"Avenida Proprietario {i}, 200",
                 tipo="proprietario",      # Ajustado para corresponder ao valor da opção
                 chave_pix=cpf_value,      # Chave PIX igual ao CPF
-                status="Disponivel"       # Status fixo como disponivel
+                status="disponivel"       # Status fixo como disponivel
             )
             proprietarios.append(prop)
         self.stdout.write("5 proprietários criados.")

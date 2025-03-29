@@ -186,6 +186,11 @@ class AlugarImovelView(CreateView):
         form.fields['imovel'].disabled = True
         form.fields['proprietario'].disabled = True
         form.fields['imobiliaria'].disabled = True
+
+        # Ajusta o tamanho dos campos de taxas para inputs menores
+        for field_name in ['taxa_juros', 'taxa_multa', 'taxa_adm']:
+            if field_name in form.fields:
+                form.fields[field_name].widget.attrs.update({'class': 'form-control form-control-sm'})
         return form
 
     def get_initial(self):
@@ -248,7 +253,7 @@ class AlugarImovelView(CreateView):
         contrato.data_fim = contrato.data_inicio + relativedelta(months=periodo)
         contrato.periodo_contrato = periodo
         contrato.periodo_renovacao = periodo
-        
+
         # Define o tipo e o status do contrato
         contrato.tipo = 'aluguel'
         contrato.status = 'ativo'
@@ -269,6 +274,7 @@ class AlugarImovelView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('contrato_list')
+
 
 
 
