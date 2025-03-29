@@ -24,6 +24,9 @@ class ImovelForm(forms.ModelForm):
 
 
 
+from django import forms
+from .models import Contrato
+
 PERIOD_CHOICES = (
     (6, "6 meses"),
     (12, "12 meses"),
@@ -31,7 +34,11 @@ PERIOD_CHOICES = (
 )
 
 class ContratoAluguelForm(forms.ModelForm):
-    periodo_contrato = forms.ChoiceField(choices=PERIOD_CHOICES, label="Período de locação (meses)")
+    periodo_contrato = forms.ChoiceField(
+        choices=PERIOD_CHOICES,
+        label="Período de locação (meses)",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
 
     class Meta:
         model = Contrato
@@ -39,8 +46,32 @@ class ContratoAluguelForm(forms.ModelForm):
             'imovel', 'inquilino', 'proprietario', 'imobiliaria', 'valor_aluguel',
             'data_inicio', 'observacoes', 'periodo_contrato', 'data_assinatura_contrato',
             'taxa_juros', 'taxa_multa', 'garantia', 'parcelamento_garantia',
-            'modo_pagamento', 'dia_pagamento', 'taxa_adm', 'valor_caucao'
+            'modo_pagamento', 'dia_pagamento', 'taxa_adm', 'valor_caucao',
+            'data_pagamento_caucao', 'data_primeiro_pagamento', 'valor_primeiro_pagamento'
         ]
+        widgets = {
+            'imovel': forms.HiddenInput(),
+            'inquilino': forms.Select(attrs={'class': 'form-control'}),
+            'proprietario': forms.Select(attrs={'class': 'form-control'}),
+            'imobiliaria': forms.Select(attrs={'class': 'form-control'}),
+            'valor_aluguel': forms.NumberInput(attrs={'class': 'form-control'}),
+            'data_inicio': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'observacoes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'data_assinatura_contrato': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'taxa_juros': forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'step': '0.01'}),
+            'taxa_multa': forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'step': '0.01'}),
+            'garantia': forms.Select(attrs={'class': 'form-control'}),
+            'parcelamento_garantia': forms.Select(attrs={'class': 'form-control'}),
+            'modo_pagamento': forms.Select(attrs={'class': 'form-control'}),
+            'dia_pagamento': forms.Select(attrs={'class': 'form-control'}),
+            'taxa_adm': forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'step': '0.01'}),
+            'valor_caucao': forms.NumberInput(attrs={'class': 'form-control'}),
+            'data_pagamento_caucao': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'data_primeiro_pagamento': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'valor_primeiro_pagamento': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
+
 
 from django.contrib.auth.forms import AuthenticationForm
 
