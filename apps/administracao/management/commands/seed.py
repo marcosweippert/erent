@@ -12,15 +12,18 @@ class Command(BaseCommand):
         # Criando 5 inquilinos
         inquilinos = []
         for i in range(1, 6):
+            cpf_value = "{:011d}".format(random.randint(0, 99999999999))
             inq = Pessoa.objects.create(
                 nome=f"Inquilino {i}",
                 data_nascimento=date(1990, random.randint(1, 12), random.randint(1, 28)),
-                cpf="{:011d}".format(random.randint(0, 99999999999)),
+                cpf=cpf_value,
                 rg=str(random.randint(1000000, 9999999)),
                 estado_civil="Solteiro",
                 nacionalidade="Brasileiro",
                 endereco=f"Rua Inquilino {i}, 100",
-                tipo="inquilino"
+                tipo="inquilino",         # Ajustado para corresponder ao valor da opção
+                chave_pix=cpf_value,      # Chave PIX igual ao CPF
+                status="Disponivel"       # Status fixo como disponivel
             )
             inquilinos.append(inq)
         self.stdout.write("5 inquilinos criados.")
@@ -28,18 +31,22 @@ class Command(BaseCommand):
         # Criando 5 proprietários
         proprietarios = []
         for i in range(1, 6):
+            cpf_value = "{:011d}".format(random.randint(0, 99999999999))
             prop = Pessoa.objects.create(
                 nome=f"Proprietario {i}",
                 data_nascimento=date(1970, random.randint(1, 12), random.randint(1, 28)),
-                cpf="{:011d}".format(random.randint(0, 99999999999)),
+                cpf=cpf_value,
                 rg=str(random.randint(1000000, 9999999)),
                 estado_civil="Casado",
                 nacionalidade="Brasileiro",
                 endereco=f"Avenida Proprietario {i}, 200",
-                tipo="proprietario"
+                tipo="proprietario",      # Ajustado para corresponder ao valor da opção
+                chave_pix=cpf_value,      # Chave PIX igual ao CPF
+                status="Disponivel"       # Status fixo como disponivel
             )
             proprietarios.append(prop)
         self.stdout.write("5 proprietários criados.")
+
 
         # Criando 2 imobiliárias e vinculando a proprietários
         imobiliarias = []
@@ -48,7 +55,6 @@ class Command(BaseCommand):
                 nome=f"Imobiliaria {i}",
                 cnpj=str(random.randint(10**13, 10**14 - 1)),  # 14 dígitos
                 endereco=f"Av. Imobiliaria {i}, 1000",
-                proprietario=proprietarios[i - 1]
             )
             imobiliarias.append(imobiliaria)
         self.stdout.write("2 imobiliárias criadas.")
@@ -64,40 +70,45 @@ class Command(BaseCommand):
             condominios.append(condominio)
         self.stdout.write("3 condomínios criados.")
 
-        # Atribuir para cada imobiliária um condomínio.
-        # Neste exemplo, associamos:
-        # - Imobiliaria 1 com Condominio 1
-        # - Imobiliaria 2 com Condominio 2
+        # Mapeamento: associa cada imobiliária a um condomínio (se disponível)
         imobiliaria_condominio_map = {}
         if imobiliarias and len(condominios) >= 2:
             imobiliaria_condominio_map[imobiliarias[0]] = condominios[0]
             imobiliaria_condominio_map[imobiliarias[1]] = condominios[1]
 
-        # Criando 20 imóveis e vinculando a uma imobiliária e ao condomínio associado a ela
+        # Criando 20 imóveis e vinculando-os diretamente à imobiliária, ao condomínio e ao proprietário
         imoveis = []
-        tipos_imovel = ['residencial', 'comercial']
-        for i in range(1, 21):
-            # Gera a referência básica
+        # Lista de tipos: Kitnet, Casa e Barracao, conforme alterações
+        tipos_imovel = ['Kitnet', 'Casa', 'Barracao']
+        for i in range(1, 11):
             ref = f"IMV{i:03d}"
-            # Se já existe um imóvel com essa referência, gera uma nova referência com sufixo aleatório
+            # Garante referência única
             while Imovel.objects.filter(referencia=ref).exists():
                 ref = f"IMV{i:03d}-{random.randint(100,999)}"
+            # Seleciona aleatoriamente uma imobiliária dentre as criadas
+            imobiliaria = random.choice(imobiliarias)
+            # Recupera o condomínio associado à imobiliária, se existir
+            condominio = imobiliaria_condominio_map.get(imobiliaria)
+            # Seleciona aleatoriamente um tipo de imóvel
+            tipo = random.choice(tipos_imovel)
+            # Define a categoria: se o tipo for Barracao, a categoria será Comercial; caso contrário, Residencial
+            categoria = "Comercial" if tipo == "Barracao" else "Residencial"
+            # Consulta no banco de dados as pessoas com tipo "proprietario" e seleciona uma aleatoriamente
+            proprietario = random.choice(list(Pessoa.objects.filter(tipo__iexact="proprietario")))
             imovel = Imovel.objects.create(
                 referencia=ref,
                 endereco=f"Rua Imovel {i}, {random.randint(1,300)}",
                 valor_aluguel=round(random.uniform(1000.00, 5000.00), 2),
                 valor_venda=round(random.uniform(200000.00, 500000.00), 2),
-                tipo=random.choice(tipos_imovel),
+                tipo=tipo,
+                categoria=categoria,
                 status="disponivel",
-                observacoes=f"Imóvel {i} gerado automaticamente."
+                observacoes=f"Imóvel {i} gerado automaticamente.",
+                imobiliaria=imobiliaria,
+                condominio=condominio,
+                proprietario=proprietario
             )
-            # Escolhe aleatoriamente uma imobiliária dentre as 2 criadas
-            imobiliaria = random.choice(imobiliarias)
-            imobiliaria.imoveis.add(imovel)
-            # Vincula o imóvel ao condomínio associado à imobiliária escolhida
-            condominio = imobiliaria_condominio_map.get(imobiliaria)
-            if condominio:
-                condominio.imoveis.add(imovel)
             imoveis.append(imovel)
-        self.stdout.write("20 imóveis criados e vinculados a imobiliárias e condomínios.")
+        self.stdout.write("20 imóveis criados e vinculados a imobiliárias, condomínios e proprietários através dos campos em Imovel.")
         self.stdout.write(self.style.SUCCESS("Seed executado com sucesso!"))
+

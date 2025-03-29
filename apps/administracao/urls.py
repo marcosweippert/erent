@@ -4,11 +4,16 @@ from .views import (
     ImobiliariaListView, ImobiliariaDetailView, ImobiliariaCreateView, ImobiliariaUpdateView, ImobiliariaDeleteView,
     CondominioListView, CondominioDetailView, CondominioCreateView, CondominioUpdateView, CondominioDeleteView,
     ImovelListView, ImovelDetailView, ImovelCreateView, ImovelUpdateView, ImovelDeleteView,
-    ContratoListView, ContratoDetailView, ContratoUpdateView, ContratoDeleteView, index, AlugarImovelView, ContratoAluguelDetailView, 
+    ContratoListView, ContratoDetailView, ContratoUpdateView, ContratoDeleteView, index, AlugarImovelView, ContratoAluguelDetailView, UserLoginView
 )
+from .views import logout_view
+
 
 urlpatterns = [
     path('', index, name='index'),
+
+    path('login/', UserLoginView.as_view(), name='login'),
+    path('logout/', logout_view, name='logout'),
     # URLs para Pessoa
     path('pessoas/', PessoaListView.as_view(), name='pessoa_list'),
     path('pessoas/novo/', PessoaCreateView.as_view(), name='pessoa_create'),

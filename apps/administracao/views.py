@@ -1,18 +1,32 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Pessoa, Imobiliaria, Condominio, Imovel, Contrato
-from .forms import PessoaForm, ImobiliariaForm, CondominioForm, ImovelForm, ContratoAluguelForm
-from django.shortcuts import render
+from .forms import PessoaForm, ImobiliariaForm, CondominioForm, ImovelForm, ContratoAluguelForm, LoginForm
+from django.shortcuts import render, redirect
 from dateutil.relativedelta import relativedelta
 from datetime import date
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import logout
+from django.contrib import messages
 
 
 
 def index(request):
+
     imoveis = Imovel.objects.filter(status='disponivel')
     return render(request, 'index.html', {'imoveis': imoveis})
 
 
+
+
+class UserLoginView(LoginView):
+    template_name = 'login.html'
+    authentication_form = LoginForm
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Você saiu do sistema.")
+    return redirect('login')
 
 
 class PessoaListView(ListView):
@@ -120,6 +134,12 @@ class ImovelCreateView(CreateView):
     template_name = "imovel/imovel_form.html"
     success_url = reverse_lazy('imovel_list')
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        # Filtra para exibir apenas pessoas do tipo 'proprietario'
+        form.fields['proprietario'].queryset = Pessoa.objects.filter(tipo='proprietario')
+        return form
+    
 class ImovelUpdateView(UpdateView):
     model = Imovel
     form_class = ImovelForm
@@ -155,7 +175,6 @@ class ContratoDeleteView(DeleteView):
 
 
 
-
 class AlugarImovelView(CreateView):
     model = Contrato
     form_class = ContratoAluguelForm
@@ -179,13 +198,11 @@ class AlugarImovelView(CreateView):
                 self.imovel_instance = imovel
                 initial['imovel'] = imovel.pk
                 initial['valor_aluguel'] = imovel.valor_aluguel
-                # Preenche automaticamente os campos imobiliaria e proprietario a partir da primeira imobiliária associada
-                imobiliarias = imovel.imobiliaria_set.all()
-                if imobiliarias.exists():
-                    imobiliaria = imobiliarias.first()
-                    initial['imobiliaria'] = imobiliaria.pk
-                    if imobiliaria.proprietario:
-                        initial['proprietario'] = imobiliaria.proprietario.pk
+                # Preenche os campos imobiliaria e proprietario diretamente a partir do imóvel
+                if imovel.imobiliaria:
+                    initial['imobiliaria'] = imovel.imobiliaria.pk
+                if imovel.proprietario:
+                    initial['proprietario'] = imovel.proprietario.pk
             except Imovel.DoesNotExist:
                 self.imovel_instance = None
         else:
@@ -220,14 +237,12 @@ class AlugarImovelView(CreateView):
         contrato = form.save(commit=False)
         # Define o imóvel a partir da instância obtida via GET
         contrato.imovel = self.imovel_instance
-        # Preenche automaticamente os campos imobiliaria e proprietario a partir da primeira imobiliária associada
+        # Preenche os campos imobiliaria e proprietario diretamente do imóvel
         if self.imovel_instance:
-            imobiliarias = self.imovel_instance.imobiliaria_set.all()
-            if imobiliarias.exists():
-                imobiliaria = imobiliarias.first()
-                contrato.imobiliaria = imobiliaria
-                if imobiliaria.proprietario:
-                    contrato.proprietario = imobiliaria.proprietario
+            if self.imovel_instance.imobiliaria:
+                contrato.imobiliaria = self.imovel_instance.imobiliaria
+            if self.imovel_instance.proprietario:
+                contrato.proprietario = self.imovel_instance.proprietario
 
         # Calcula a data final com base na data de início e no período escolhido
         contrato.data_fim = contrato.data_inicio + relativedelta(months=periodo)
@@ -254,6 +269,8 @@ class AlugarImovelView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('contrato_list')
+
+
 
 
 

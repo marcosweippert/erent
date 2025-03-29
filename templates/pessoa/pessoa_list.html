@@ -1,21 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Pessoas - Administração de Imóveis{% endblock %}
 {% block content %}
-{% block extra_css %}
-<style>
-  /* Aumenta o padding das células da tabela para melhorar a visualização */
-  .table td, .table th {
-      padding: 0.4rem;
-  }
-  /* Força a tabela a ocupar 100% da largura disponível */
-  .table {
-      width: 100% !important;
-  }
-</style>
-{% endblock %}
-<div class="container-fluid mt-4">
-  <h1 class="display-4 text-center">Pessoas</h1>
-<a href="{% url 'pessoa_create' %}" class="btn btn-primary mb-3">Cadastrar Pessoa</a>
+<h1>Pessoas</h1>
+<a href="{% url 'pessoa_create' %}" class="btn btn-secondary mb-3">Cadastrar Pessoa</a>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -37,8 +24,8 @@
       <td>{{ pessoa.cpf }}</td>
       <td>{{ pessoa.endereco }}</td>
       <td>{{ pessoa.chave_pix }}</td>
-      <td>{{ pessoa.status }}</td>
       <td>{{ pessoa.get_tipo_display }}</td>
+      <td>{{ pessoa.status }}</td>
       <td>
         <a href="{% url 'pessoa_detail' pessoa.pk %}" class="btn btn-info btn-sm">Detalhes</a>
         <a href="{% url 'pessoa_update' pessoa.pk %}" class="btn btn-warning btn-sm">Editar</a>
@@ -47,7 +34,7 @@
     </tr>
     {% empty %}
     <tr>
-      <td colspan="5">Nenhuma pessoa cadastrada.</td>
+      <td colspan="8">Nenhuma pessoa cadastrada.</td>
     </tr>
     {% endfor %}
   </tbody>
