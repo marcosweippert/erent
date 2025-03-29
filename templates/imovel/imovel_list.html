@@ -1,101 +1,82 @@
 {% extends "base.html" %}
 {% block title %}Imóveis - Administração de Imóveis{% endblock %}
-{% block extra_css %}
-<style>
-  /* Aumenta o padding das células da tabela para melhorar a visualização */
-  .table td, .table th {
-      padding: 0.4rem;
-  }
-  /* Força a tabela a ocupar 100% da largura disponível */
-  .table {
-      width: 100% !important;
-  }
-</style>
-{% endblock %}
 {% block content %}
-<div class="container-fluid mt-4">
-  <h1 class="display-4 text-center">Imóveis</h1>
-  
-  <!-- Seção: Imóveis Disponíveis -->
-  <h2 class="mt-4">Imóveis Disponíveis</h2>
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped">
-      <thead class="thead-dark">
-        <tr>
-          <th>Referência</th>
-          <th>Endereço</th>
-          <th>Valor Aluguel</th>
-          <th>Valor Venda</th>
-          <th>Tipo</th>
-          <th>Status</th>
-          <th>Observações</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for imovel in disponiveis %}
-        <tr>
-          <td>{{ imovel.referencia }}</td>
-          <td>{{ imovel.endereco }}</td>
-          <td>{{ imovel.valor_aluguel }}</td>
-          <td>{{ imovel.valor_venda }}</td>
-          <td>{{ imovel.get_tipo_display }}</td>
-          <td>{{ imovel.get_status_display }}</td>
-          <td>{{ imovel.observacoes }}</td>
-          <td>
-            <a href="{% url 'imovel_detail' imovel.pk %}" class="btn btn-info btn-sm">Detalhes</a>
-            <a href="{% url 'imovel_update' imovel.pk %}" class="btn btn-warning btn-sm">Editar</a>
-            <a href="{% url 'imovel_delete' imovel.pk %}" class="btn btn-danger btn-sm">Excluir</a>
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="8" class="text-center">Nenhum imóvel disponível.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+<h1>Imóveis</h1>
+<a href="{% url 'imovel_create' %}" class="btn btn-primary mb-3">Novo Imóvel</a>
 
-  <!-- Seção: Imóveis Alugados -->
-  <h2 class="mt-5">Imóveis Alugados</h2>
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped">
-      <thead class="thead-dark">
-        <tr>
-          <th>Referência</th>
-          <th>Endereço</th>
-          <th>Valor Aluguel</th>
-          <th>Valor Venda</th>
-          <th>Tipo</th>
-          <th>Status</th>
-          <th>Observações</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for imovel in alugados %}
-        <tr>
-          <td>{{ imovel.referencia }}</td>
-          <td>{{ imovel.endereco }}</td>
-          <td>{{ imovel.valor_aluguel }}</td>
-          <td>{{ imovel.valor_venda }}</td>
-          <td>{{ imovel.get_tipo_display }}</td>
-          <td>{{ imovel.get_status_display }}</td>
-          <td>{{ imovel.observacoes }}</td>
-          <td>
-            <a href="{% url 'imovel_detail' imovel.pk %}" class="btn btn-info btn-sm">Detalhes</a>
-            <a href="{% url 'imovel_update' imovel.pk %}" class="btn btn-warning btn-sm">Editar</a>
-            <a href="{% url 'imovel_delete' imovel.pk %}" class="btn btn-danger btn-sm">Excluir</a>
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="8" class="text-center">Nenhum imóvel alugado.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
+<h2>Imóveis Disponíveis</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Referência</th>
+      <th>Endereço</th>
+      <th>Valor Aluguel</th>
+      <th>Valor Venda</th>
+      <th>Tipo</th>
+      <th>Status</th>
+      <th>Observações</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for imovel in disponiveis %}
+    <tr>
+      <td>{{ imovel.referencia }}</td>
+      <td>{{ imovel.endereco }}</td>
+      <td>{{ imovel.valor_aluguel }}</td>
+      <td>{{ imovel.valor_venda }}</td>
+      <td>{{ imovel.get_tipo_display }}</td>
+      <td>{{ imovel.get_status_display }}</td>
+      <td>{{ imovel.observacoes }}</td>
+      <td>
+        <a href="{% url 'imovel_detail' imovel.pk %}" class="btn btn-info btn-sm">Detalhes</a>
+        <a href="{% url 'imovel_update' imovel.pk %}" class="btn btn-warning btn-sm">Editar</a>
+        <a href="{% url 'imovel_delete' imovel.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="8">Nenhum imóvel disponível.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Imóveis Alugados</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Referência</th>
+      <th>Endereço</th>
+      <th>Valor Aluguel</th>
+      <th>Valor Venda</th>
+      <th>Tipo</th>
+      <th>Status</th>
+      <th>Observações</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for imovel in alugados %}
+    <tr>
+      <td>{{ imovel.referencia }}</td>
+      <td>{{ imovel.endereco }}</td>
+      <td>{{ imovel.valor_aluguel }}</td>
+      <td>{{ imovel.valor_venda }}</td>
+      <td>{{ imovel.get_tipo_display }}</td>
+      <td>{{ imovel.get_status_display }}</td>
+      <td>{{ imovel.observacoes }}</td>
+      <td>
+        <a href="{% url 'imovel_detail' imovel.pk %}" class="btn btn-info btn-sm">Detalhes</a>
+        <a href="{% url 'imovel_update' imovel.pk %}" class="btn btn-warning btn-sm">Editar</a>
+        <a href="{% url 'imovel_delete' imovel.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="8">Nenhum imóvel alugado.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}
