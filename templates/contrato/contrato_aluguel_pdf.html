@@ -68,87 +68,97 @@
 </head>
 <body>
   <div class="container">
-    <h1>CONTRATO DE LOCAÇÃO RESIDENCIAL</h1>
+    <h2>CONTRATO DE LOCAÇÃO RESIDENCIAL</h2>
     
     <p>
       <strong>Referência:</strong> {{ referencia }} - <strong>Contrato nº:</strong> {{ object.id }}
     </p>
     
     <p>
-      <strong>OBJETO DE CONTRATO DE LOCAÇÃO:</strong> O presente contrato tem como objeto o imóvel de propriedade do LOCADOR 
+      <strong>OBJETO DE CONTRATO DE LOCAÇÃO:</strong> O presente contrato tem como objeto o imóvel de propriedade do locador 
       <strong>{{ locador }}</strong>, situado na <strong>{{ endereco_imovel }}</strong>.
     </p>
     
     <p>
-      <strong>LOCADOR:</strong> {{ locador }}, {{ estado_civil_locador }}, CPF sob nº {{ cpf_locador }}, portador da cédula de identidade nº 
-      {{ rg_locador }}, residente em {{ cidade_locador }}.
+      <strong>Locador:</strong> {{ locador }}, {{ estado_civil_locador }}, CPF sob nº {{ cpf_locador }}, portador da cédula de identidade nº {{ rg_locador }}, residente em {{ cidade_locador }}.
     </p>
     
     <p>
-      <strong>LOCATÁRIO:</strong> {{ nome_completo }}, {{ estado_civil }}, CPF sob nº {{ cpf_cnpj }}, Carteira de Identidade nº 
-      {{ rg_expedidor }}, residente e domiciliado em {{ endereco_atual }}.
+      <strong>Locatário:</strong> {{ nome_completo }}, {{ estado_civil }}, CPF sob nº {{ cpf_cnpj }}, Carteira de Identidade nº {{ rg_expedidor }}, residente e domiciliado em {{ endereco_atual }}.
     </p>
     
     <p>
-      As partes, acima qualificadas, ajustam a locação de USO RESIDENCIAL do imóvel objeto deste contrato, mediante as cláusulas e condições a seguir descritas, ficando desde já aceito que o imóvel destina-se exclusivamente a RESIDÊNCIA, não podendo ter sua destinação alterada sem o consentimento expresso, por escrito, do LOCADOR.
+      As partes, acima qualificadas, ajustam a locação de uso residencial do imóvel objeto deste contrato, mediante as cláusulas e condições a seguir descritas, ficando desde já aceito que o imóvel destina-se exclusivamente a residência, não podendo ter sua destinação alterada sem o consentimento expresso, por escrito, do locador.
     </p>
     
-    <h2>Cláusulas:</h2>
+    <h2>Cláusulas</h2>
     
     <p class="clausula">
-      <strong>CLÁUSULA PRIMEIRA:</strong> O prazo de locação será de <strong>{{ prazo_locacao }}</strong> meses, a partir de <strong>{{ data_inicio|date:"d/m/Y" }}</strong>, terminando em <strong>{{ data_final|date:"d/m/Y" }}</strong>, data em que o LOCATÁRIO se obriga a restituir o imóvel locado, completamente desocupado; caso o imóvel não seja desocupado na data estipulada, o LOCATÁRIO estará obrigado a pagar as diárias que excederem o dia fixado para a saída, bem como arcar com os demais gastos necessários, inclusive despesas judiciais e honorários advocatícios na base de 20% sobre o débito.
-    </p>
-    
-    <p class="clausula">
-      <em>* PRORROGAÇÃO DO CONTRATO</em> – Ultrapassando o prazo previsto, o LOCADOR poderá rescindir o contrato a qualquer tempo, autorizando a desocupação imediata do imóvel pelo LOCATÁRIO e tomando posse do mesmo, por via extrajudicial ou judicial, dispensando-se notificação prévia.
+      <strong>CLÁUSULA PRIMEIRA:</strong> O prazo de locação será de <strong>{{ prazo_locacao }}</strong> meses, a partir de <strong>{{ data_inicio|date:"d/m/Y" }}</strong>, terminando em <strong>{{ data_final|date:"d/m/Y" }}</strong>, data em que o locatário se obriga a restituir o imóvel locado, completamente desocupado; caso o imóvel não seja desocupado na data estipulada, o locatário estará obrigado a pagar as diárias que excederem o dia fixado para a saída, bem como arcar com os demais gastos necessários, inclusive despesas judiciais e honorários advocatícios na base de 20% sobre o débito.
     </p>
     
     <p class="clausula">
-      <em>* LIBERAÇÃO DO IMÓVEL EM CASO DE VENDA</em> – O LOCATÁRIO deverá estar ciente de que, em caso de venda do imóvel, será obrigado a restituir o local, reconhecendo ao LOCADOR a faculdade de rescindir o contrato mediante comunicação escrita, com a obrigatoriedade de desocupação do imóvel no prazo de 30 (trinta) dias.
+      <em>* PRORROGAÇÃO DO CONTRATO</em> – Ultrapassando o prazo previsto, o locador poderá rescindir o contrato a qualquer tempo, autorizando a desocupação imediata do imóvel pelo locatário e tomando posse do mesmo, por via extrajudicial ou judicial, dispensando-se notificação prévia.
     </p>
     
     <p class="clausula">
-      <strong>CLÁUSULA SEGUNDA:</strong> O LOCATÁRIO se obriga a pagar mensalmente o valor de locação correspondente a R$ <strong>{{ valor_aluguel }}</strong>, já inclusos taxas de condomínio, IPTU (se houver), energia elétrica e água, a ser efetuado até o dia ({{ dia_pagamento }}) do mês subsequente, através de transferência {{ modo_pagamento }} chave {{ chave_pix }}.
+      <em>* LIBERAÇÃO DO IMÓVEL EM CASO DE VENDA</em> – O locatário deverá estar ciente de que, em caso de venda do imóvel, será obrigado a restituir o local, reconhecendo ao locador a faculdade de rescindir o contrato mediante comunicação escrita, com a obrigatoriedade de desocupação do imóvel no prazo de 30 (trinta) dias.
     </p>
     
+    <p class="clausula">
+      <strong>CLÁUSULA SEGUNDA:</strong> O locatário se obriga a pagar mensalmente o valor de locação correspondente a R$ <strong>{{ valor_aluguel }}</strong>, já inclusos taxas de IPTU, a ser efetuado até o dia <strong>{{ dia_pagamento }}</strong> do mês subsequente, através de {{ modo_pagamento }} chave {{ chave_pix }}.
+    </p>
+
+    <p class="clausula">
+      As despesas com o consumo de luz e água e outras utilidades quando lançados separadamente para a coisa locada, serão sempre de exclusiva responsabilidade do locatário, que se obriga a fazer os respectivos pagamentos nas épocas e nos montantes devidos junto aos órgãos e repartições competentes.
+    </p>
+
+    <p class="clausula">
+      O locatário será o único responsável pelas multas e majorações ou outras comunicações a que der causa, relativamente às despesas referidas nesta cláusula, ainda que lançadas em nome do locador.
+    </p>
+
+    <p class="clausula">
+      Se, porventura, o locador efetuar os pagamentos referidos nesta cláusula, a fim de evitar cobrança em seu nome, as quantias por ela despendidas serão reembolsadas pelo locatário.
+    </p>
+
     <p class="clausula">
       <em>* REAJUSTE</em> – O aluguel mensal será reajustado a cada 12 meses, conforme índice IPCA, durante a vigência deste contrato e eventuais prorrogações.
     </p>
     
     <p class="clausula">
-      <strong>CLÁUSULA TERCEIRA:</strong> GARANTIA DE LOCAÇÃO. O LOCATÁRIO pagará antecipadamente, na data de assinatura, o valor proporcional ao período entre <strong>{{ data_inicio|date:"d/m/Y" }}</strong> e o final do mês corrente, referente ao primeiro mês de locação, além de uma caução de R$ <strong>{{ valor_caucao }}</strong>, que será pago em <strong>{{ parcelamento_garantia }}</strong> vezes, servindo como garantia até o término da vigência deste contrato.
+      <strong>CLÁUSULA TERCEIRA:</strong> GARANTIA DE LOCAÇÃO. O locatário pagará antecipadamente, na data de assinatura, o valor proporcional ao período entre <strong>{{ data_inicio|date:"d/m/Y" }}</strong> e o final do mês corrente, referente ao primeiro mês de locação, além de uma caução de R$ <strong>{{ valor_caucao }}</strong>, que será pago em <strong>{{ parcelamento_garantia }}</strong> vezes, servindo como garantia até o término da vigência deste contrato.
     </p>
     
     <p class="clausula">
-      <strong>CLÁUSULA QUARTA:</strong> CONDIÇÕES DO IMÓVEL – O LOCATÁRIO declara receber o imóvel em perfeito estado de conservação, manutenção e limpeza, com instalações elétricas e hidráulicas em perfeito funcionamento, com todos os cômodos e paredes pintados, sendo que portas, portões e acessórios encontram-se também em perfeito funcionamento, devendo o LOCATÁRIO mantê-lo nesta condição. O imóvel foi entregue mobiliado e, no momento da devolução, após vistoria final, o LOCATÁRIO restituirá o imóvel nas mesmas condições em que o recebeu; os bens móveis deverão ser entregues conservados e limpos, sob pena de indenização equivalente e multa.
+      <strong>CLÁUSULA QUARTA:</strong> CONDIÇÕES DO IMÓVEL – O locatário declara receber o imóvel em perfeito estado de conservação, manutenção e limpeza, com instalações elétricas e hidráulicas em perfeito funcionamento, com todos os cômodos e paredes pintados, sendo que portas, portões e acessórios encontram-se também em perfeito funcionamento, devendo o locatário mantê-lo nesta condição. O imóvel foi entregue mobiliado e, no momento da devolução, após vistoria final, o locatário restituirá o imóvel nas mesmas condições em que o recebeu; os bens móveis deverão ser entregues conservados e limpos, sob pena de indenização equivalente e multa.
     </p>
     
     <p class="clausula">
-      <em>* VISTORIA FINAL</em> – No último dia da locação, o LOCADOR realizará a vistoria no imóvel juntamente com o LOCATÁRIO, ocasião em que deverão ser devolvidas as chaves e conferidos os bens conforme inventário realizado na assinatura deste contrato.
+      <em>* VISTORIA FINAL</em> – No último dia da locação, o locador realizará a vistoria no imóvel juntamente com o locatário, ocasião em que deverão ser devolvidas as chaves e conferidos os bens conforme inventário realizado na assinatura deste contrato.
     </p>
     
     <p class="clausula">
-      <strong>CLÁUSULA QUINTA:</strong> BENFEITORIAS E CONSTRUÇÕES. Qualquer benfeitoria ou construção realizada no imóvel deverá ser submetida imediatamente à autorização expressa do LOCADOR. Caso a benfeitoria não seja aceita, o LOCATÁRIO deverá modificar o imóvel para que fique conforme o estado original, não assistindo ao LOCATÁRIO o direito de retenção ou indenização.
+      <strong>CLÁUSULA QUINTA:</strong> BENFEITORIAS E CONSTRUÇÕES. Qualquer benfeitoria ou construção realizada no imóvel deverá ser submetida imediatamente à autorização expressa do locador. Caso a benfeitoria não seja aceita, o locatário deverá modificar o imóvel para que fique conforme o estado original, não assistindo ao locatário o direito de retenção ou indenização.
     </p>
     
     <p class="clausula">
-      <strong>CLÁUSULA SEXTA:</strong> O LOCATÁRIO não poderá sublocar nem emprestar o imóvel, no todo ou em parte, devendo utilizá-lo de forma a preservar as condições estéticas, de segurança e morais, bem como a tranquilidade e o bem-estar dos vizinhos.
+      <strong>CLÁUSULA SEXTA:</strong> O locatário não poderá sublocar nem emprestar o imóvel, no todo ou em parte, devendo utilizá-lo de forma a preservar as condições estéticas, de segurança e morais, bem como a tranquilidade e o bem-estar dos vizinhos.
     </p>
     
     <p class="clausula">
-      <strong>CLÁUSULA SÉTIMA:</strong> DO CONDOMÍNIO. Caso o imóvel esteja situado em condomínio, o LOCATÁRIO obriga-se a cumprir o Regulamento Interno, não podendo guardar objetos nas áreas comuns que impeçam seu uso.
+      <strong>CLÁUSULA SÉTIMA:</strong> DO CONDOMÍNIO. Caso o imóvel esteja situado em condomínio, o locatário obriga-se a cumprir o Regulamento Interno, não podendo guardar objetos nas áreas comuns que impeçam seu uso.
     </p>
     
     <p class="clausula">
-      <strong>CLÁUSULA OITAVA:</strong> DIREITO DE PREFERÊNCIA E VISTORIAS ESPORÁDICAS. Se o LOCADOR manifestar intenção de vender o imóvel, deverá notificar o LOCATÁRIO por escrito, que se obriga a responder em 30 (trinta) dias, permitindo a realização de vistorias com possíveis interessados.
+      <strong>CLÁUSULA OITAVA:</strong> DIREITO DE PREFERÊNCIA E VISTORIAS ESPORÁDICAS. Se o locador manifestar intenção de vender o imóvel, deverá notificar o locatário por escrito, que se obriga a responder em 30 (trinta) dias, permitindo a realização de vistorias com possíveis interessados.
     </p>
     
     <p class="clausula">
-      <strong>VISTORIAS:</strong> O LOCATÁRIO permitirá ao LOCADOR realizar vistorias no imóvel, em data e hora a serem combinadas, para verificação do funcionamento de todas as instalações e acessórios. Constatando algum vício que afete a estrutura do imóvel, o LOCATÁRIO deverá realizar o conserto no prazo de 10 (dez) dias, sob pena de rescisão contratual.
+      <strong>VISTORIAS:</strong> O locatário permitirá ao locador realizar vistorias no imóvel, em data e hora a serem combinadas, para verificação do funcionamento de todas as instalações e acessórios. Constatando algum vício que afete a estrutura do imóvel, o locatário deverá realizar o conserto no prazo de 10 (dez) dias, sob pena de rescisão contratual.
     </p>
     
     <p class="clausula">
-      <strong>CLÁUSULA NONA:</strong> RESCISÃO. Caso o imóvel seja utilizado para fins diversos da locação residencial, o LOCADOR poderá rescindir o presente contrato sem gerar direito a indenização, impondo ao LOCATÁRIO o despejo imediato e a responsabilidade por multas e encargos legais. O descumprimento de quaisquer cláusulas também autoriza a rescisão contratual e a desocupação imediata.
+      <strong>CLÁUSULA NONA:</strong> RESCISÃO. Caso o imóvel seja utilizado para fins diversos da locação residencial, o locador poderá rescindir o presente contrato sem gerar direito a indenização, impondo ao locatário o despejo imediato e a responsabilidade por multas e encargos legais. O descumprimento de quaisquer cláusulas também autoriza a rescisão contratual e a desocupação imediata.
     </p>
     
     <p class="clausula">
@@ -156,11 +166,11 @@
     </p>
     
     <p class="clausula">
-      <em>* RESPONSABILIDADES DO FIADOR</em> – A responsabilidade do fiador abrange majorações de aluguéis, impostos, taxas, seguros e encargos assumidos pelo LOCATÁRIO, mesmo que não tenha participado diretamente, estendendo-se inclusive em caso de falecimento do afiançado.
+      <em>* RESPONSABILIDADES DO FIADOR</em> – A responsabilidade do fiador abrange majorações de aluguéis, impostos, taxas, seguros e encargos assumidos pelo locatário, mesmo que não tenha participado diretamente, estendendo-se inclusive em caso de falecimento do afiançado.
     </p>
     
     <p class="clausula">
-      <em>* MUDANÇA DE ENDEREÇO</em> – O fiador obriga-se a comunicar ao LOCADOR, por escrito, qualquer mudança de endereço (comercial ou residencial).
+      <em>* MUDANÇA DE ENDEREÇO</em> – O fiador obriga-se a comunicar ao locador, por escrito, qualquer mudança de endereço (comercial ou residencial).
     </p>
     
     <p class="clausula">
@@ -185,7 +195,7 @@
         <p class="assinatura-line"></p>
         <p>
           <strong>Locatário:</strong> {{ nome_completo }}<br>
-          CPF/CNPJ: {{ cpf_cnpj }}
+            CPF/CNPJ: {{ cpf_cnpj }}
         </p>
       </div>
     </div>

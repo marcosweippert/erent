@@ -2,9 +2,9 @@ from django.urls import path
 from .views import (
     PessoaListView, PessoaDetailView, PessoaCreateView, PessoaUpdateView, PessoaDeleteView,
     ImobiliariaListView, ImobiliariaDetailView, ImobiliariaCreateView, ImobiliariaUpdateView, ImobiliariaDeleteView,
-    CondominioListView, CondominioDetailView, CondominioCreateView, CondominioUpdateView, CondominioDeleteView,
-    ImovelListView, ImovelDetailView, ImovelCreateView, ImovelUpdateView, ImovelDeleteView,
-    ContratoListView, ContratoDetailView, ContratoUpdateView, ContratoDeleteView, index, AlugarImovelView, ContratoAluguelDetailView, UserLoginView
+    CondominioListView, CondominioDetailView, CondominioCreateView, CondominioUpdateView, CondominioDeleteView, PagamentoCreateView,
+    ImovelListView, ImovelDetailView, ImovelCreateView, ImovelUpdateView, ImovelDeleteView, PagamentoListView, PagamentoUpdateView,PagamentoDeleteView,
+    ContratoListView, ContratoDetailView, ContratoUpdateView, ContratoDeleteView, index, AlugarImovelView, ContratoAluguelDetailView, UserLoginView, calcular_pagamento, pagar_parcela
 )
 from .views import logout_view
 
@@ -50,5 +50,13 @@ urlpatterns = [
 
     path('contratos/alugar/', AlugarImovelView.as_view(), name='contrato_alugar'),
     path('contratos/visualizar/<int:pk>/', ContratoAluguelDetailView.as_view(), name='contrato_visualizar'),
+
+    path('pagamentos/', PagamentoListView.as_view(), name='pagamento_list'),
+    path('pagamentos/create/', PagamentoCreateView.as_view(), name='pagamento_create'),
+
+    path('pagamentos/<int:pk>/edit/', PagamentoUpdateView.as_view(), name='pagamento_update'),
+    path('pagamentos/<int:pk>/delete/', PagamentoDeleteView.as_view(), name='pagamento_delete'),
+    path('pagamento/calcular/<int:pk>/', calcular_pagamento, name='calcular_pagamento'),
+    path('pagamento/pagar/<int:pk>/', pagar_parcela, name='pagar_parcela'),
 
 ]

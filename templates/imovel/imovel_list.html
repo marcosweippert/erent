@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Imóveis - Administração de Imóveis{% endblock %}
 {% block content %}
-<h1>Imóveis</h1>
-<a href="{% url 'imovel_create' %}" class="btn btn-secondary mb-3">Novo Imóvel</a>
+<h3>Imóveis</h3>
+<a href="{% url 'imovel_create' %}" class="btn btn-secondary mb-3 btn-sm">Novo Imóvel</a>
 
 <table class="table table-striped">
   <thead>
@@ -48,7 +48,7 @@
   </tbody>
 </table>
 
-<h2>Imóveis Alugados</h2>
+<h3>Imóveis Alugados</h3>
 <table class="table table-striped">
   <thead>
     <tr>

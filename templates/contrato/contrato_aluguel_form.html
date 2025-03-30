@@ -201,3 +201,26 @@
   </div>
 </div>
 {% endblock %}
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dataInicioInput = document.getElementById("id_data_inicio");
+    const valorAluguelInput = document.getElementById("id_valor_aluguel");
+    const valorPrimeiroPagamentoInput = document.getElementById("id_valor_primeiro_pagamento");
+
+    function calcularValorPrimeiroPagamento() {
+      const dataInicio = new Date(dataInicioInput.value);
+      const valorAluguel = parseFloat(valorAluguelInput.value);
+
+      if (!isNaN(dataInicio) && !isNaN(valorAluguel)) {
+        const diasRestantes = 30 - dataInicio.getDate();
+        const valorProporcional = ((valorAluguel / 30) * diasRestantes).toFixed(2);
+        valorPrimeiroPagamentoInput.value = valorProporcional;
+      }
+    }
+
+    dataInicioInput.addEventListener("change", calcularValorPrimeiroPagamento);
+    valorAluguelInput.addEventListener("input", calcularValorPrimeiroPagamento);
+  });
+</script>
+{% endblock %}

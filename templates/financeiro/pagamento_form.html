@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Criar Pagamento{% endblock %}
+{% block content %}
+<div class="container-fluid mt-5">
+  <h1 class="display-4 text-center">Criar Pagamento</h1>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <!-- Campo Inquilino -->
+    <div class="form-group">
+      <label for="{{ form.inquilino.id_for_label }}">Inquilino</label>
+      {{ form.inquilino }}
+      {% for error in form.inquilino.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Campo Contrato (preenchido automaticamente e desabilitado) -->
+    <div class="form-group">
+      <label for="{{ form.contrato.id_for_label }}">Contrato</label>
+      {{ form.contrato }}
+      {% for error in form.contrato.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Campo Parcela -->
+    <div class="form-group">
+      <label for="{{ form.parcela.id_for_label }}">Parcela</label>
+      {{ form.parcela }}
+      {% for error in form.parcela.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Campo Vencimento -->
+    <div class="form-group">
+      <label for="{{ form.vencimento.id_for_label }}">Vencimento</label>
+      {{ form.vencimento }}
+      {% for error in form.vencimento.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Campo Valor -->
+    <div class="form-group">
+      <label for="{{ form.valor.id_for_label }}">Valor</label>
+      {{ form.valor }}
+      {% for error in form.valor.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Campo Status -->
+    <div class="form-group">
+      <label for="{{ form.status.id_for_label }}">Status</label>
+      {{ form.status }}
+      {% for error in form.status.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <a href="{% url 'pagamento_list' %}" class="btn btn-secondary btn-sm">Cancelar</a>
+      <button type="submit" class="btn btn-primary btn-sm">Salvar Pagamento</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}Pagamentos - Administração de Imóveis{% endblock %}
+
+{% block content %}
+<h3>Pagamentos</h3>
+<a href="{% url 'pagamento_create' %}" class="btn btn-secondary mb-3 btn-sm">Novo Pagamento</a>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Contrato</th>
+      <th>Cliente</th>
+      <th>Parcela</th>
+      <th>Vencimento</th>
+      <th>Data Pagto</th>
+      <th>Valor</th>
+      <th>Juros</th>
+      <th>Multa</th>
+      <th>Total</th>
+      <th>Status</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pagamento in pagamentos_pendentes %}
+    <tr>
+      <td>{{ pagamento.id }}</td>
+      <td>{{ pagamento.contrato.id }}</td>
+      <td>{{ pagamento.inquilino.nome }}</td>
+      <td>{{ pagamento.parcela }}</td>
+      <td>{{ pagamento.vencimento|date:"d/m/Y" }}</td>
+      <td>
+        <input type="date"
+               value="{% if pagamento.vencimento <= hoje %}{{ hoje|date:'Y-m-d' }}{% else %}{{ pagamento.vencimento|date:'Y-m-d' }}{% endif %}"
+               id="data_pagamento_{{ pagamento.id }}">
+      </td>
+      <td>{{ pagamento.valor }}</td>
+      <td id="juros_{{ pagamento.id }}">{{ pagamento.juros|default:"0.00" }}</td>
+      <td id="multa_{{ pagamento.id }}">{{ pagamento.multa|default:"0.00" }}</td>
+      <td id="total_pago_{{ pagamento.id }}">{{ pagamento.total_pago|default:pagamento.valor }}</td>
+      <td>{{ pagamento.get_status_display }}</td>
+      <td>
+        <button onclick="atualizarValores('{{ pagamento.id }}')" class="btn btn-info btn-sm">Calcular</button>
+        <button onclick="pagarParcela('{{ pagamento.id }}')" class="btn btn-success btn-sm">Pagar</button>
+        <a href="{% url 'pagamento_update' pagamento.pk %}" class="btn btn-warning btn-sm">Editar</a>
+        <a href="{% url 'pagamento_delete' pagamento.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="12" class="text-center">Nenhum pagamento pendente.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Pagamentos Realizados</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Contrato</th>
+      <th>Cliente</th>
+      <th>Parcela</th>
+      <th>Vencimento</th>
+      <th>Data Pagto</th>
+      <th>Valor</th>
+      <th>Juros</th>
+      <th>Multa</th>
+      <th>Total</th>
+      <th>Status</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pagamento in pagamentos_pagos %}
+    <tr>
+      <td>{{ pagamento.id }}</td>
+      <td>{{ pagamento.contrato.id }}</td>
+      <td>{{ pagamento.inquilino.nome }}</td>
+      <td>{{ pagamento.parcela }}</td>
+      <td>{{ pagamento.vencimento|date:"d/m/Y" }}</td>
+      <td>{{ pagamento.data_pagamento|date:"d/m/Y" }}</td>
+      <td>{{ pagamento.valor }}</td>
+      <td>{{ pagamento.juros }}</td>
+      <td>{{ pagamento.multa }}</td>
+      <td>{{ pagamento.total_pago }}</td>
+      <td>{{ pagamento.get_status_display }}</td>
+      <td>
+        <a href="{% url 'pagamento_update' pagamento.pk %}" class="btn btn-warning btn-sm">Editar</a>
+        <a href="{% url 'pagamento_delete' pagamento.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="12" class="text-center">Nenhum pagamento realizado.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+function atualizarValores(pagamentoId) {
+  const data_pagamento = document.getElementById(`data_pagamento_${pagamentoId}`).value;
+  fetch(`/pagamento/calcular/${pagamentoId}/?data_pagamento=${data_pagamento}`)
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById(`juros_${pagamentoId}`).textContent = data.juros;
+      document.getElementById(`multa_${pagamentoId}`).textContent = data.multa;
+      document.getElementById(`total_pago_${pagamentoId}`).textContent = data.total_pago;
+      document.getElementById(`data_pagamento_${pagamentoId}`).value = data.data_pagamento;
+    });
+}
+
+function pagarParcela(pagamentoId) {
+  const data_pagamento = document.getElementById(`data_pagamento_${pagamentoId}`).value;
+  fetch(`/pagamento/pagar/${pagamentoId}/`, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': '{{ csrf_token }}',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ data_pagamento }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.status === 'success') {
+      window.location.reload();
+    } else {
+      alert('Erro ao realizar pagamento.');
+    }
+  });
+}
+</script>
+{% endblock %}

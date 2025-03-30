@@ -21,6 +21,7 @@ class Pessoa(models.Model):
     observacoes = models.TextField(blank=True, null=True)
     tipo = models.CharField(max_length=15, choices=TIPOS)
     status = models.CharField(max_length=15, choices=STATUS_INQUILINO, blank=True, null=True)
+    contrato = models.ForeignKey('Contrato', on_delete=models.CASCADE, blank=True, null=True, related_name="contratos_inquilino")
 
     def __str__(self):
         return self.nome
@@ -191,3 +192,22 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+class Pagamento(models.Model):
+    STATUS_CHOICES = (
+        ('pendente', 'Pendente'),
+        ('pago', 'Pago'),
+    )
+    contrato = models.ForeignKey(Contrato, on_delete=models.CASCADE, related_name="pagamentos")
+    inquilino = models.ForeignKey(Pessoa, on_delete=models.CASCADE, null=True, blank=True, related_name='pagamentos_inquilino')
+    parcela = models.PositiveIntegerField()
+    vencimento = models.DateField()
+    data_pagamento = models.DateField(null=True, blank=True)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    juros = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    multa = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_pago = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pendente')
+
+    def __str__(self):
+        return f"Pagamento {self.parcela} do Contrato {self.contrato.id}"
